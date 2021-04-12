@@ -1,20 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Card } from 'primereact/card';
-import { Panel } from 'primereact/panel';
-import { getArticles, TEMP_ARTICLES } from './Services/Api';
-import ReactWordcloud, { MinMaxPair, Optional, Options, Word } from 'react-wordcloud';
+import { getArticles, getArticlesCount, } from './Services/Api';
+import ReactWordcloud, { MinMaxPair, Optional, Options } from 'react-wordcloud';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
+import { useCallback } from 'react';
 
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
+  const [articlesCount, setArticlesCount] = useState<number | undefined>(undefined)
   const [searchFilter, setSearchFilter] = useState<string>('')
   const [maxArticles, setMaxArticles] = useState<number>(10)
   const searchFilterTimeout = useRef<number>();
 
-  const fetchArticles = (): void => {
+  const fetchArticles = useCallback((): void => {
     console.log('fetchArticles');
     getArticles(searchFilter, maxArticles)
       .then((data: any) => {
@@ -25,17 +24,29 @@ function App() {
         setArticles(articles);
       })
       .catch((err: Error) => console.log(err))
-  }
+
+    getArticlesCount(searchFilter)
+      .then((data: any) => {
+        const newArticlesCount = data.data.count as number;
+
+        console.log('newArticlesCount', newArticlesCount);
+
+        setArticlesCount(newArticlesCount);
+      })
+      .catch((err: Error) => console.log(err))
+    // setArticles(TEMP_ARTICLES);
+    // setArticlesCount(TEMP_COUNT_ARTICLES.count);
+  }, [maxArticles, searchFilter]);
 
   useEffect(() => {
-    // window.clearTimeout(searchFilterTimeout.current);
-    // searchFilterTimeout.current = window.setTimeout(() => {
-    //   if (searchFilter.length > 3)
-    //     fetchArticles();
-    //   window.clearTimeout(searchFilterTimeout.current);
-    // }, 500);
-    setArticles(TEMP_ARTICLES);
-  }, [searchFilter, maxArticles]);
+    window.clearTimeout(searchFilterTimeout.current);
+    searchFilterTimeout.current = window.setTimeout(() => {
+      if (searchFilter.length > 3)
+        fetchArticles();
+      window.clearTimeout(searchFilterTimeout.current);
+    }, 500);
+    // setArticles(TEMP_ARTICLES);
+  }, [searchFilter, maxArticles, fetchArticles]);
 
   const getWordCloudWords = (article: ArticleRow) => {
     let wordsCloud: WordCloud[] = [];
@@ -83,11 +94,16 @@ function App() {
           <InputNumber id="maxArticles" style={{ width: '100px' }} value={maxArticles} onValueChange={(e) => setMaxArticles(e.value)} showButtons={true} min={1} max={50} />
         </div>
       </div>
+      <div>
+        <b>
+          {articlesCount && (articlesCount + ' Articles')}
+        </b>
+      </div>
       <div className="p-d-flex p-flex-wrap">
         {
-          articles.map((article: ArticleRow) => (
-            <div>
-              <div key={article.url} className="box p-m-2 p-p-0" style={{ width: "300px", height: "300px" }} onClick={(e) => window.open(article.url, "_blank")} >
+          articles.map((article: ArticleRow, index: number) => (
+            <div key={index} >
+              <div className="box p-m-2 p-p-0" style={{ width: "300px", height: "300px" }} onClick={(e) => window.open(article.url, "_blank")} >
                 <ReactWordcloud words={getWordCloudWords(article)} size={size} minSize={size} options={options} callbacks={callbacks} />
               </div>
             </div>

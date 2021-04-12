@@ -1,11 +1,11 @@
 This is a React Frontend application for Webscraper.
 
 # In the project directory, to install dependencies you can run
-`yarn`
+`npm i`
 
 # then to start the application you can run
 
-`yarn start`
+`npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -15,7 +15,7 @@ You will also see any lint errors in the console.
 
 # To build the production application you can run
 
-`yarn build`
+`npm run build`
 
 It correctly bundles React in production mode and optimizes the build for the best performance.
 

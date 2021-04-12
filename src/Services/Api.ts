@@ -22,6 +22,29 @@ export const getArticles = async (search: string, maxResult: number): Promise<Ax
     }
 }
 
+export const getArticlesCount = async (search: string): Promise<AxiosResponse<GetArticlesCountResponse>> => {
+    axios.defaults.withCredentials = true;
+    try {
+        const results: AxiosResponse<GetArticlesCountResponse> = await axios.get(baseUrl + `/articles/results/${search}`,
+            {
+                method: "OPTIONS",
+                headers: {
+                    "Authorization": "Token fd314d4436dfdc9fd990822cd1e483d951c7dfd6",
+                    "Accept": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST,GET,OPTIONS, PUT, DELETE"
+                }
+            });
+        return results;
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+export const TEMP_COUNT_ARTICLES = {
+    count: 792
+}
+
 export const TEMP_ARTICLES: ArticleRow[] = [
     {
         url: "https://www.datacenterknowledge.com/archives/2013/02/11/video-installing-a-2-megawatt-generator",

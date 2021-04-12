@@ -19,3 +19,13 @@ type GetArticlesResponse = {
     status: string
     data: ArticleRow[]
 }
+
+type GetArticlesCountRow = {
+    count: number;
+}
+
+type GetArticlesCountResponse = {
+    message: string
+    status: string
+    data: GetArticlesCountRow;
+}
