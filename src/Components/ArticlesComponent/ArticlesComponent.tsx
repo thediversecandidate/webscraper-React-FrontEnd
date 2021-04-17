@@ -1,10 +1,19 @@
+import { Paginator, PaginatorProps } from 'primereact/paginator';
 import React from 'react';
-import ReactWordcloud, { MinMaxPair, Optional, Options, Word } from 'react-wordcloud';
+import ReactWordcloud, { MinMaxPair, Optional, Options } from 'react-wordcloud';
 import PleaseWaitComponent from '../PleaseWaitComponent/PleaseWaitComponent';
 import './ArticlesComponent.css';
 
-function ArticlesComponent(props: any) {
-    const { articles, articlesCount, loading } = props;
+type ArticlesComponentProps = {
+    first: number;
+    setFirst: (value: number) => void;
+    articlesPerPage: number;
+    articles: ArticleRow[];
+    articlesCount: number;
+    loading: boolean;
+}
+
+function ArticlesComponent({ first, setFirst, articlesPerPage, articles, articlesCount, loading }: ArticlesComponentProps) {
 
     const getWordCloudWords = (article: ArticleRow) => {
         let wordsCloud: WordCloud[] = [];
@@ -51,24 +60,24 @@ function ArticlesComponent(props: any) {
         enableTooltip: false,
     };
 
-    const callbacks = {
-        getWordColor: (word: Word) => {
-            return word.value === 1 ? "#ee9205" : interpolateColor('8c8d8e', '000000', word.value);
-        },
-    }
+    // const callbacks = {
+    //     getWordColor: (word: Word) => {
+    //         return word.value === 1 ? "#ee9205" : interpolateColor('8c8d8e', '000000', word.value);
+    //     },
+    // }
 
-    const interpolateColor = (a: string, b: string, amount: number) => {
+    // const interpolateColor = (a: string, b: string, amount: number) => {
 
-        var ah = parseInt(a.replace(/#/g, ''), 16),
-            ar = ah >> 16, ag = (ah >> 8) & 0xff, ab = ah & 0xff,
-            bh = parseInt(b.replace(/#/g, ''), 16),
-            br = bh >> 16, bg = (bh >> 8) & 0xff, bb = bh & 0xff,
-            rr = ar + amount * (br - ar),
-            rg = ag + amount * (bg - ag),
-            rb = ab + amount * (bb - ab);
+    //     var ah = parseInt(a.replace(/#/g, ''), 16),
+    //         ar = ah >> 16, ag = (ah >> 8) & 0xff, ab = ah & 0xff,
+    //         bh = parseInt(b.replace(/#/g, ''), 16),
+    //         br = bh >> 16, bg = (bh >> 8) & 0xff, bb = bh & 0xff,
+    //         rr = ar + amount * (br - ar),
+    //         rg = ag + amount * (bg - ag),
+    //         rb = ab + amount * (bb - ab);
 
-        return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
-    }
+    //     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+    // }
 
     const getFormatedDate = (date: string) => {
         const d = new Date(date);
@@ -94,6 +103,13 @@ function ArticlesComponent(props: any) {
                         ))
                     }
                 </div>
+                {
+                    articles.length > 0 &&
+                    <Paginator rows={articlesPerPage} totalRecords={articlesCount}
+                        first={first} onPageChange={(e) => setFirst(e.first)}
+                        template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                    ></Paginator>
+                }
             </div>
     );
 }

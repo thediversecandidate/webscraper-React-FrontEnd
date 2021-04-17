@@ -7,11 +7,14 @@ import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent'
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
+  const [articlesPerPage, setArticlesPerPage] = useState<number>(6)
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [first, setFirst] = useState<number>(0);
 
   // const searchFilterTimeout = useRef<number>();
 
-  const fetchArticles = (searchFilter: string, maxArticles: number): void => {
+  const fetchArticles = useCallback((searchFilter: string, maxArticles: number): void => {
     // console.log('fetchArticles');
 
     setLoading(true);
@@ -40,7 +43,7 @@ function App() {
         console.log(err);
         setLoading(false);
       })
-  }
+  }, []);
 
   // useEffect(() => {
   //   window.clearTimeout(searchFilterTimeout.current);
@@ -125,8 +128,9 @@ function App() {
 
   return (
     <div className="App">
-      <SearchComponent search={search} />
-      <ArticlesComponent articles={articles} articlesCount={articlesCount} loading={loading} />
+      <SearchComponent search={search} articlesPerPage={articlesPerPage} setArticlesPerPage={setArticlesPerPage} />
+      <ArticlesComponent articles={articles} articlesCount={articlesCount}
+        loading={loading} first={first} setFirst={setFirst} articlesPerPage={articlesPerPage} />
     </div >
   );
 }

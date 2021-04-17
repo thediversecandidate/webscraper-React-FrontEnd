@@ -1,11 +1,8 @@
-import React, { } from "react";
+import React from "react";
 import './PleaseWaitComponent.css';
 import { ProgressBar } from "primereact/progressbar";
 
-type PleaseWaitComponentProps = {
-}
-
-const PleaseWaitComponent = ({ }: PleaseWaitComponentProps) => {
+const PleaseWaitComponent = () => {
     return (
         <div className="p-d-flex p-jc-center">
             <div className="p-d-flex p-flex-column p-pt-3">

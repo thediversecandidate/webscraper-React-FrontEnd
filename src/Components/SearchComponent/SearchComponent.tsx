@@ -5,8 +5,13 @@ import React, { useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import './SearchComponent.css';
 
-function SearchComponent(props: any) {
-    const { search } = props;
+type ArticlesComponentProps = {
+    search: (searchFilter: string, articlesPerPage: number) => void;
+    articlesPerPage: number;
+    setArticlesPerPage: (value: number) => void;
+}
+
+function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: ArticlesComponentProps) {
 
     const orderBys: OrderByRow[] = [
         { label: 'Date (Ascending)', code: 'date_asc' },
@@ -14,7 +19,6 @@ function SearchComponent(props: any) {
     ];
 
     const [searchFilter, setSearchFilter] = useState<string>('')
-    const [maxArticles, setMaxArticles] = useState<number>(10)
     const [selectedOrderBy, setSelectedOrderBy] = useState<OrderByRow>(orderBys[1]);
 
     const onOrderByChange = (orderBy: OrderByRow) => {
@@ -29,19 +33,19 @@ function SearchComponent(props: any) {
                     <i className="pi pi-search" />
                     <InputText id="searchFilter" value={searchFilter} onKeyPress={(e) => {
                         if (e.key === 'Enter')
-                            search(searchFilter, maxArticles);
+                            search(searchFilter, articlesPerPage);
                     }} onChange={(e) => setSearchFilter(e.currentTarget.value)} placeholder="Search" />
                 </span>
             </div>
             <div className="p-field" >
                 <label htmlFor="maxArticles" >Max Articles</label>
-                <InputNumber id="maxArticles" value={maxArticles} onValueChange={(e) => setMaxArticles(e.value)} showButtons={true} min={1} max={50} />
+                <InputNumber id="maxArticles" value={articlesPerPage} onValueChange={(e) => setArticlesPerPage(e.value)} showButtons={true} min={1} max={50} />
             </div>
             <div className="p-field" >
                 <label htmlFor="orderBy" >Order By</label>
                 <Dropdown id="orderBy" value={selectedOrderBy} options={orderBys} onChange={(e) => onOrderByChange(e.value)} optionLabel="label" />
             </div>
-            <Button label="Search" onClick={() => search(searchFilter, maxArticles)} />
+            <Button label="Search" onClick={() => search(searchFilter, articlesPerPage)} />
         </div>
     );
 }
