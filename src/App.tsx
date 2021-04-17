@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { getArticles, getArticlesCount } from './Services/Api';
 import SearchComponent from './Components/SearchComponent/SearchComponent';
@@ -8,42 +8,35 @@ function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
   const [articlesPerPage, setArticlesPerPage] = useState<number>(6)
-
+  const [searchFilter, setSearchFilter] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('asc');
   const [loading, setLoading] = useState<boolean>(false);
   const [first, setFirst] = useState<number>(0);
 
   // const searchFilterTimeout = useRef<number>();
 
-  const fetchArticles = useCallback((searchFilter: string, maxArticles: number): void => {
-    // console.log('fetchArticles');
+  const fetchArticles = useCallback((searchFilter: string, sortBy: string): void => {
 
-    setLoading(true);
+    if (searchFilter.length >= 1) {
+      // console.log('fetchArticles');
+      // console.log('fetchArticles', first);
 
-    getArticlesCount(searchFilter)
-      .then((data: any) => {
-        const newArticlesCount = data.data.count as number;
-        // console.log('newArticlesCount', newArticlesCount);
+      setLoading(true);
 
-        getArticles(searchFilter, maxArticles)
-          .then((data: any) => {
-            let articles = data.data as ArticleRow[];
+      getArticles(searchFilter, first, first + articlesPerPage, sortBy)
+        .then((data: any) => {
+          let articles = data.data as ArticleRow[];
 
-            // console.log('articles', articles);
-
-            setArticlesCount(newArticlesCount);
-            setArticles(articles);
-            setLoading(false);
-          })
-          .catch((err: Error) => {
-            console.log(err);
-            setLoading(false);
-          })
-      })
-      .catch((err: Error) => {
-        console.log(err);
-        setLoading(false);
-      })
-  }, []);
+          // console.log('articles', articles);
+          setArticles(articles);
+          setLoading(false);
+        })
+        .catch((err: Error) => {
+          console.log(err);
+          setLoading(false);
+        })
+    }
+  }, [first, searchFilter, sortBy]);
 
   // useEffect(() => {
   //   window.clearTimeout(searchFilterTimeout.current);
@@ -55,9 +48,26 @@ function App() {
   //   setArticles(TEMP_ARTICLES);
   // }, [searchFilter, maxArticles]);
 
-  const search = (searchFilter: string, maxArticles: number) => {
-    if (searchFilter.length >= 1)
-      fetchArticles(searchFilter, maxArticles);
+  useEffect(() => {
+    fetchArticles(searchFilter, sortBy);
+  }, [first, searchFilter, sortBy]);
+
+  const search = (searchFilter: string, sortBy: string) => {
+    setSearchFilter(searchFilter);
+    setSortBy(sortBy);
+
+    getArticlesCount(searchFilter)
+      .then((data: any) => {
+        const newArticlesCount = data.data.count as number;
+        // console.log('newArticlesCount', newArticlesCount);
+        setArticlesCount(newArticlesCount);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+        setLoading(false);
+      })
+
+    //fetchArticles(searchFilter);
     // setArticles(TEMP_ARTICLES);
   }
 

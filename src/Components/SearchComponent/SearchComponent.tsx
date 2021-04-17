@@ -1,12 +1,12 @@
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import './SearchComponent.css';
 
 type ArticlesComponentProps = {
-    search: (searchFilter: string, articlesPerPage: number) => void;
+    search: (searchFilter: string, sortBy: string) => void;
     articlesPerPage: number;
     setArticlesPerPage: (value: number) => void;
 }
@@ -14,16 +14,12 @@ type ArticlesComponentProps = {
 function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: ArticlesComponentProps) {
 
     const orderBys: OrderByRow[] = [
-        { label: 'Date (Ascending)', code: 'date_asc' },
-        { label: 'Date (Descending)', code: 'date_desc' },
+        { label: 'Date (Ascending)', code: 'asc' },
+        { label: 'Date (Descending)', code: 'desc' },
     ];
 
     const [searchFilter, setSearchFilter] = useState<string>('')
     const [selectedOrderBy, setSelectedOrderBy] = useState<OrderByRow>(orderBys[1]);
-
-    const onOrderByChange = (orderBy: OrderByRow) => {
-        setSelectedOrderBy(orderBy);
-    }
 
     return (
         <div className="p-formgroup-inline p-m-3 p-justify-center">
@@ -33,7 +29,7 @@ function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: Articl
                     <i className="pi pi-search" />
                     <InputText id="searchFilter" value={searchFilter} onKeyPress={(e) => {
                         if (e.key === 'Enter')
-                            search(searchFilter, articlesPerPage);
+                            search(searchFilter, selectedOrderBy.code);
                     }} onChange={(e) => setSearchFilter(e.currentTarget.value)} placeholder="Search" />
                 </span>
             </div>
@@ -43,9 +39,9 @@ function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: Articl
             </div>
             <div className="p-field" >
                 <label htmlFor="orderBy" >Order By</label>
-                <Dropdown id="orderBy" value={selectedOrderBy} options={orderBys} onChange={(e) => onOrderByChange(e.value)} optionLabel="label" />
+                <Dropdown id="orderBy" value={selectedOrderBy} options={orderBys} onChange={(e) => setSelectedOrderBy(e.value)} optionLabel="label" />
             </div>
-            <Button label="Search" onClick={() => search(searchFilter, articlesPerPage)} />
+            <Button label="Search" onClick={() => search(searchFilter, selectedOrderBy.code)} />
         </div>
     );
 }
