@@ -29,3 +29,8 @@ type GetArticlesCountResponse = {
     status: string
     data: GetArticlesCountRow;
 }
+
+type OrderByRow = {
+    label: string
+    code: string
+}

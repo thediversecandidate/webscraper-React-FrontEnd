@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactWordcloud, { MinMaxPair, Optional, Options, Word } from 'react-wordcloud';
+import PleaseWaitComponent from '../PleaseWaitComponent/PleaseWaitComponent';
 import './ArticlesComponent.css';
 
 function ArticlesComponent(props: any) {
-    const { articles, articlesCount } = props;
+    const { articles, articlesCount, loading } = props;
 
     const getWordCloudWords = (article: ArticleRow) => {
         let wordsCloud: WordCloud[] = [];
@@ -69,21 +70,31 @@ function ArticlesComponent(props: any) {
         return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
     }
 
+    const getFormatedDate = (date: string) => {
+        const d = new Date(date);
+
+        return d.toLocaleDateString('en-US');
+    }
+
     return (
-        <div>
-            <b className={articles.length === 0 ? 'hidden' : ''}>Found {articlesCount.toString()} articles</b>
-            <div className="p-d-flex p-flex-wrap p-justify-center">
-                {
-                    articles.map((article: ArticleRow, index: number) => (
-                        <div key={index.toString()} >
-                            <div className="box p-m-2 p-p-0" style={{ width: "300px", height: "300px" }} onClick={(e) => window.open(article.url, "_blank")} >
-                                <ReactWordcloud words={getWordCloudWords(article)} size={size} minSize={size} options={options} />
+        loading ?
+            <PleaseWaitComponent />
+            :
+            <div>
+                <b className={articles.length === 0 ? 'hidden' : ''}>Found {articlesCount.toString()} articles</b>
+                <div className="p-d-flex p-flex-wrap p-justify-center">
+                    {
+                        articles.map((article: ArticleRow, index: number) => (
+                            <div key={index.toString()} >
+                                <div className="box p-ml-2 p-mr-2 p-mt-2 p-p-0" style={{ width: "300px", height: "300px" }} onClick={(e) => window.open(article.url, "_blank")} >
+                                    <ReactWordcloud words={getWordCloudWords(article)} size={size} minSize={size} options={options} />
+                                </div>
+                                <h3 className="p-pt-0 p-mt-0">{getFormatedDate(article.created_date)}</h3>
                             </div>
-                        </div>
-                    ))
-                }
+                        ))
+                    }
+                </div>
             </div>
-        </div>
     );
 }
 

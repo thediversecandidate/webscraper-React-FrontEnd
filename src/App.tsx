@@ -1,16 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import './App.css';
 import { getArticles, getArticlesCount } from './Services/Api';
-import ArticlesComponent from './Components/ArticlesComponent';
-import SearchComponent from './Components/SearchComponent';
+import SearchComponent from './Components/SearchComponent/SearchComponent';
+import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent';
 
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(false);
+
   // const searchFilterTimeout = useRef<number>();
 
   const fetchArticles = (searchFilter: string, maxArticles: number): void => {
     // console.log('fetchArticles');
+
+    setLoading(true);
 
     getArticlesCount(searchFilter)
       .then((data: any) => {
@@ -25,10 +29,17 @@ function App() {
 
             setArticlesCount(newArticlesCount);
             setArticles(articles);
+            setLoading(false);
           })
-          .catch((err: Error) => console.log(err))
+          .catch((err: Error) => {
+            console.log(err);
+            setLoading(false);
+          })
       })
-      .catch((err: Error) => console.log(err))
+      .catch((err: Error) => {
+        console.log(err);
+        setLoading(false);
+      })
   }
 
   // useEffect(() => {
@@ -115,7 +126,7 @@ function App() {
   return (
     <div className="App">
       <SearchComponent search={search} />
-      <ArticlesComponent articles={articles} articlesCount={articlesCount} />
+      <ArticlesComponent articles={articles} articlesCount={articlesCount} loading={loading} />
     </div >
   );
 }
