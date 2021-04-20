@@ -1,7 +1,7 @@
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import './SearchComponent.css';
 
@@ -22,7 +22,7 @@ function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: Articl
     const [selectedOrderBy, setSelectedOrderBy] = useState<OrderByRow>(orderBys[1]);
 
     return (
-        <div className="p-formgroup-inline p-m-3 p-justify-center">
+        <div className="p-formgroup-inline p-ml-3 p-mr-3 p-mt-3 p-justify-center">
             <div className="p-field">
                 <label htmlFor="firstname2">Search for</label>
                 <span className="p-input-icon-left">
