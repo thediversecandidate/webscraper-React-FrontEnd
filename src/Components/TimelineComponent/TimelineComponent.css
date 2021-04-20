@@ -1,10 +1,15 @@
-.custom-marker {
-    display: flex;
-    width: 1.5rem;
-    height: 1.5rem;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    border-radius: 50%;
-    z-index: 1;
+.p-timeline-event-content {
+    text-align: left !important;
 }
+
+.p-button-timeline {
+    font-size: 0.3rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+.p-button .pi-check {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
