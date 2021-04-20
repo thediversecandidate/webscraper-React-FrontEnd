@@ -7,6 +7,7 @@ interface ArticleRow {
     wordcloud_words: string;
     wordcloud_scores: string;
     created_date: string;
+    published_date: string;
 }
 
 interface WordCloud {

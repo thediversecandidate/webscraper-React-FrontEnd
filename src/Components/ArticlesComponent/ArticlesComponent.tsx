@@ -98,7 +98,7 @@ function ArticlesComponent({ first, setFirst, articlesPerPage, articles, article
                                 <div className="box p-ml-2 p-mr-2 p-mt-2 p-p-0" style={{ width: "300px", height: "300px" }} onClick={(e) => window.open(article.url, "_blank")} >
                                     <ReactWordcloud words={getWordCloudWords(article)} size={size} minSize={size} options={options} />
                                 </div>
-                                <h3 className="p-pt-0 p-mt-0">{getFormatedDate(article.created_date)}</h3>
+                                <h3 className="p-pt-0 p-mt-0">{getFormatedDate(article.published_date)}</h3>
                             </div>
                         ))
                     }

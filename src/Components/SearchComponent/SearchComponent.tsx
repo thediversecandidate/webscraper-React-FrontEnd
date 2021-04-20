@@ -39,7 +39,8 @@ function SearchComponent({ search, articlesPerPage, setArticlesPerPage }: Articl
             </div>
             <div className="p-field" >
                 <label htmlFor="orderBy" >Order By</label>
-                <Dropdown id="orderBy" value={selectedOrderBy} options={orderBys} onChange={(e) => setSelectedOrderBy(e.value)} optionLabel="label" />
+                <Dropdown id="orderBy" value={selectedOrderBy} options={orderBys} className="p-text-left"
+                    onChange={(e) => setSelectedOrderBy(e.value)} optionLabel="label" />
             </div>
             <Button label="Search" onClick={() => search(searchFilter, selectedOrderBy.code)} />
         </div>

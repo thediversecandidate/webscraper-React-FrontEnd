@@ -7,7 +7,7 @@ import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent'
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
-  const [articlesPerPage, setArticlesPerPage] = useState<number>(6)
+  const [articlesPerPage, setArticlesPerPage] = useState<number>(10)
   const [searchFilter, setSearchFilter] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('asc');
   const [loading, setLoading] = useState<boolean>(false);
