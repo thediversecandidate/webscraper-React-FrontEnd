@@ -36,7 +36,7 @@ function TimelineComponent({ articles }: TimelineComponentProps) {
                 <Timeline value={articles} layout="horizontal" align="top"
                     content={customizedContent} marker={customizedMarker} />
             }
-            <Card title={selectedArticle.title} subTitle={selectedArticle.article_summary} className="p-pt-3">
+            <Card title={selectedArticle.title} subTitle={selectedArticle.article_summary} className="p-pt-3 p-text-left">
                 {selectedArticle.body}
             </Card>
         </div>
