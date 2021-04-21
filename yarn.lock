@@ -3372,7 +3372,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.3.0, classnames@^2.3.1:
+classnames@^2.2.6, classnames@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -9248,15 +9248,15 @@ react-app-polyfill@^2.0.0:
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
 
-react-chrono@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/react-chrono/-/react-chrono-1.9.3.tgz#1fb3e9e6e8d189265d67a9d2b3c3ec2d419dda9e"
-  integrity sha512-fCfi8mZTqYq6ZpGujBIeiq11MxTzAsN1Cz9YuNTcKfY7wzeEyDzOeEgJnrwGhPKzB39mMVhQnw8OZ+lZAXpjGQ==
+react-chrono@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/react-chrono/-/react-chrono-1.9.2.tgz#02742f2c428ba72bf51e53acd8fa38ddb3a74d83"
+  integrity sha512-SiOfsD+IQUrX64JI9X7Li8sY4uTbzGwDb0Q/9MWLEjOd2hvTyDy2TwtACjZ245CVgA5TCo3LqPGSCBEyVviWeg==
   dependencies:
     "@emotion/core" "^11.0.0-next.10"
     "@emotion/react" "^11.1.5"
     "@emotion/styled" "^11.1.5"
-    classnames "^2.3.0"
+    classnames "^2.2.6"
     focus-visible "^5.2.0"
 
 react-dev-utils@^11.0.3:

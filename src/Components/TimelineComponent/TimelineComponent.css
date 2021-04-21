@@ -44,14 +44,11 @@
     }
 }
 
-.p-card-title {
-    font-size: 1.2rem !important;
+.card-sub-title {
+    color: black !important;
 }
 
-.p-card-subtitle {
-    font-size: 1.1rem !important;
-}
-
-.p-card-body {
-    font-size: 1rem !important;
+.card-description {
+    padding-left: 0px !important;
+    margin-left: 0.5rem !important;
 }

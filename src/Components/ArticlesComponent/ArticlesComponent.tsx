@@ -43,6 +43,13 @@ function ArticlesComponent({ first, setFirst, articlesPerPage, articles, article
                                     ))
                                 }
                             </div>
+                            {
+                                articles.length > 0 &&
+                                <Paginator rows={articlesPerPage} totalRecords={articlesCount}
+                                    first={first} onPageChange={(e) => setFirst(e.first)}
+                                    template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                                ></Paginator>
+                            }
                         </div>
                 }
                 {
@@ -50,13 +57,6 @@ function ArticlesComponent({ first, setFirst, articlesPerPage, articles, article
                     <div className="p-mt-3 p-mb-2">
                         <b>Found {articlesCount.toString()} articles</b>
                     </div>
-                }
-                {
-                    articles.length > 0 &&
-                    <Paginator rows={articlesPerPage} totalRecords={articlesCount}
-                        first={first} onPageChange={(e) => setFirst(e.first)}
-                        template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                    ></Paginator>
                 }
             </div>
     );
