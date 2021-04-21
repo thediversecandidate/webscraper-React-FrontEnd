@@ -1,0 +1,1 @@
+export const MAX_BODY_TEXT_CHARS = 300;
