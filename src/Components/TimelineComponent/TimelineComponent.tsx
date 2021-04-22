@@ -5,55 +5,38 @@ import { TimelineItemModel } from 'react-chrono/dist/models/TimelineItemModel';
 import { useWindowSize } from '../Helpers/Hooks';
 import { MAX_BODY_TEXT_CHARS } from '../../Models/Constants';
 import { Button } from 'primereact/button';
+import { useGeneralContext } from '../../Context/Context';
 
 type TimelineComponentProps = {
-    articles: ArticleRow[];
+    loading: boolean;
 }
 
-function TimelineComponent({ articles }: TimelineComponentProps) {
-    const [items, setItems] = useState<TimelineItemModel[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+function TimelineComponent({ loading }: TimelineComponentProps) {
+    const { articles, setFirst } = useGeneralContext();
+
+    const [currentItems, setCurrentItems] = useState<TimelineItemModel[]>([])
+    const [currentArticles, setCurrentArticles] = useState<ArticleRow[]>([])
 
     const size = useWindowSize();
 
-    const handleAutoLoad = useCallback(() => {
-
-        console.log('handleAutoLoad');
-
-        setLoading(false);
-
-        const newData = getItemsFromArticles(articles);
-        setItems([...items, ...newData]);
-
-    }, [items.length]);
-
-
-    const getItemsFromArticles = (articles: ArticleRow[]): TimelineItemModel[] => {
-
-        let data: TimelineItemModel[] = [];
-
-        for (let i = 0; i < articles.length; i++) {
-            const article = articles[0];
-
-            data.push({
-                title: article.published_date,
-            })
-        }
-
-        return data;
-    }
+    const handleLoadMore = useCallback(() => {
+        console.log('handleLoadMore', currentArticles);
+        setFirst(currentArticles.length);
+    }, [currentArticles, setFirst]);
 
     useEffect(() => {
-        if (loading) {
-            console.log('useEffect');
-            handleAutoLoad();
-        }
-    }, [loading, handleAutoLoad]);
+        const newArticles = [...currentArticles, ...articles];
+        console.log('useEffect => next', newArticles);
+        setCurrentArticles(newArticles);
 
-    const handleLoadMore = useCallback(() => {
-        console.log('handleLoadMore');
-        setLoading(true);
-    }, [items.length]);
+        const newCurrentItems = newArticles.map(x => {
+            return {
+                title: x.published_date,
+            } as TimelineItemModel
+        });
+
+        setCurrentItems(newCurrentItems);
+    }, [articles]);
 
     const getTruncatedBodyText = (article: ArticleRow) => {
         if (article.body.length > MAX_BODY_TEXT_CHARS)
@@ -62,12 +45,14 @@ function TimelineComponent({ articles }: TimelineComponentProps) {
             return article.body;
     }
 
+    console.log('currentItems', currentItems);
+
     return (
         <div className="p-pl-5 p-pr-5 p-pt-5" style={{ height: `${size.height - 210}px` }}>
             {
-                articles.length > 0 &&
+                currentArticles.length > 0 &&
                 <Chrono
-                    items={items}
+                    items={currentItems}
                     mode="VERTICAL_ALTERNATING"
                     scrollable={{ scrollbar: true }}
                     onScrollEnd={handleLoadMore}
@@ -75,9 +60,9 @@ function TimelineComponent({ articles }: TimelineComponentProps) {
                     slideShow slideItemDuration={4500}
                 >
                     {
-                        articles.map((article) => (
+                        currentArticles.map((article, index) => (
                             <div key={article.url}>
-                                <p className="p-mt-0" style={{ fontSize: '1rem', fontWeight: 600 }}>{article.title}</p>
+                                <p className="p-mt-0" style={{ fontSize: '1rem', fontWeight: 600 }}>{index.toString() + ') ' + article.title}</p>
                                 <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0f52ba' }}>{article.article_summary}</p>
                                 <p>{getTruncatedBodyText(article)}</p>
                                 <div className="p-text-right">

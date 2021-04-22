@@ -3,6 +3,7 @@ import './App.css';
 import { getArticles, getArticlesCount } from './Services/Api';
 import SearchComponent from './Components/SearchComponent/SearchComponent';
 import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent';
+import { GeneralContext } from './Context/Context';
 
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
@@ -59,20 +60,24 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <div className="p-grid">
-        <div className="p-col-12 p-pt-0">
-          <SearchComponent search={search} articlesPerPage={articlesPerPage} setArticlesPerPage={setArticlesPerPage} />
+    <GeneralContext.Provider value={{
+      articles: articles, setFirst: setFirst,
+    }}>
+      <div className="App">
+        <div className="p-grid">
+          <div className="p-col-12 p-pt-0">
+            <SearchComponent search={search} articlesPerPage={articlesPerPage} setArticlesPerPage={setArticlesPerPage} />
+          </div>
+          <div className="p-col-12 p-pt-0">
+            {
+              searchFilter.length > 0 &&
+              <ArticlesComponent articles={articles} articlesCount={articlesCount}
+                loading={loading} first={first} setFirst={setFirst} articlesPerPage={articlesPerPage} />
+            }
+          </div>
         </div>
-        <div className="p-col-12 p-pt-0">
-          {
-            searchFilter.length > 0 &&
-            <ArticlesComponent articles={articles} articlesCount={articlesCount}
-              loading={loading} first={first} setFirst={setFirst} articlesPerPage={articlesPerPage} />
-          }
-        </div>
-      </div>
-    </div >
+      </div >
+    </GeneralContext.Provider>
   );
 }
 

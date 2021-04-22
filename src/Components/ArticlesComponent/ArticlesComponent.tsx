@@ -19,21 +19,21 @@ function ArticlesComponent({ first, setFirst, articlesPerPage, articles, article
     const [isTimelineMode, setIsTimelineMode] = useState<boolean>(true);
 
     return (
-        loading ?
-            <PleaseWaitComponent />
-            :
-            <div className="p-pl-3 p-pr-3">
-                {
-                    <div className="p-formgroup-inline p-justify-center">
-                        <div className="p-field-checkbox">
-                            <label htmlFor="isTimelineMode">{isTimelineMode ? 'Timeline' : 'Word Clouds'}</label>
-                            <InputSwitch id="isTimelineMode" checked={isTimelineMode} onChange={(e) => setIsTimelineMode(e.value)} />
-                        </div>
+        <div className="p-pl-3 p-pr-3">
+            {
+                <div className="p-formgroup-inline p-justify-center">
+                    <div className="p-field-checkbox">
+                        <label htmlFor="isTimelineMode">{isTimelineMode ? 'Timeline' : 'Word Clouds'}</label>
+                        <InputSwitch id="isTimelineMode" checked={isTimelineMode} onChange={(e) => setIsTimelineMode(e.value)} />
                     </div>
-                }
-                {
-                    isTimelineMode ?
-                        <TimelineComponent articles={articles} />
+                </div>
+            }
+            {
+                isTimelineMode ?
+                    <TimelineComponent loading={loading} />
+                    :
+                    loading ?
+                        <PleaseWaitComponent />
                         :
                         <div>
                             <div className="p-d-flex p-flex-wrap p-justify-center">
@@ -51,14 +51,14 @@ function ArticlesComponent({ first, setFirst, articlesPerPage, articles, article
                                 ></Paginator>
                             }
                         </div>
-                }
-                {
-                    articles.length > 0 &&
-                    <div className="p-mt-3 p-mb-2">
-                        <b>Found {articlesCount.toString()} articles</b>
-                    </div>
-                }
-            </div>
+            }
+            {
+                articles.length > 0 &&
+                <div className="p-mt-3 p-mb-2">
+                    <b>Found {articlesCount.toString()} articles</b>
+                </div>
+            }
+        </div>
     );
 }
 
