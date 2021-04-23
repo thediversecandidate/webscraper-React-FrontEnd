@@ -5,7 +5,8 @@ import WordCloudComponent from "../WordCloudComponent/WordCloudComponent";
 import "./ArticlesComponent.css";
 import { InputSwitch } from "primereact/inputswitch";
 import { useGeneralContext } from "../../Context/Context";
-import { MAX_ARTICLE_PER_PAGE } from "../../Models/Constants";
+import { MAX_ARTICLE_PER_PAGE_DESKTOP, MAX_ARTICLE_PER_PAGE_MOBILE } from "../../Models/Constants";
+import { isMobile } from "react-device-detect";
 
 type ArticlesComponentProps = {
   first: number;
@@ -59,7 +60,7 @@ function ArticlesComponent({
           </div>
           {articles.length > 0 && (
             <Paginator
-              rows={MAX_ARTICLE_PER_PAGE}
+              rows={(isMobile ? MAX_ARTICLE_PER_PAGE_MOBILE : MAX_ARTICLE_PER_PAGE_DESKTOP)}
               totalRecords={articlesCount}
               first={first}
               onPageChange={(e) => setFirst(e.first)}

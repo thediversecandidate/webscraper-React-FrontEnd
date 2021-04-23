@@ -4,7 +4,8 @@ import { getArticles, getArticlesCount } from './Services/Api';
 import SearchComponent from './Components/SearchComponent/SearchComponent';
 import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent';
 import { GeneralContext } from './Context/Context';
-import { MAX_ARTICLE_PER_PAGE } from './Models/Constants';
+import { MAX_ARTICLE_PER_PAGE_DESKTOP, MAX_ARTICLE_PER_PAGE_MOBILE } from './Models/Constants';
+import { isMobile } from 'react-device-detect';
 
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
@@ -25,7 +26,7 @@ function App() {
 
       setLoading(true);
 
-      getArticles(searchFilter, first, first + MAX_ARTICLE_PER_PAGE, sortBy)
+      getArticles(searchFilter, first, first + (isMobile ? MAX_ARTICLE_PER_PAGE_MOBILE : MAX_ARTICLE_PER_PAGE_DESKTOP), sortBy)
         .then((data: any) => {
           let articles = data.data as ArticleRow[];
 

@@ -1,2 +1,3 @@
 export const MAX_BODY_TEXT_CHARS = 300;
-export const MAX_ARTICLE_PER_PAGE = 20;
+export const MAX_ARTICLE_PER_PAGE_MOBILE = 5;
+export const MAX_ARTICLE_PER_PAGE_DESKTOP = 20;
