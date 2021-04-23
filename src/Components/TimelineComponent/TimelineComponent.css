@@ -52,3 +52,11 @@
     padding-left: 0px !important;
     margin-left: 0.5rem !important;
 }
+
+.timeline-item-title {
+    text-align: center !important; 
+}
+
+.vertical .timeline-main-wrapper div {
+    padding-left: 0px !important;
+}

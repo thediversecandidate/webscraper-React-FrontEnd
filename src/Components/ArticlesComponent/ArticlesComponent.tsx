@@ -1,16 +1,15 @@
 import { Paginator } from "primereact/paginator";
-import React, { useState } from "react";
 import PleaseWaitComponent from "../PleaseWaitComponent/PleaseWaitComponent";
 import TimelineComponent from "../TimelineComponent/TimelineComponent";
 import WordCloudComponent from "../WordCloudComponent/WordCloudComponent";
 import "./ArticlesComponent.css";
 import { InputSwitch } from "primereact/inputswitch";
 import { useGeneralContext } from "../../Context/Context";
+import { MAX_ARTICLE_PER_PAGE } from "../../Models/Constants";
 
 type ArticlesComponentProps = {
   first: number;
   setFirst: (value: number) => void;
-  articlesPerPage: number;
   articles: ArticleRow[];
   articlesCount: number;
   loading: boolean;
@@ -19,7 +18,6 @@ type ArticlesComponentProps = {
 function ArticlesComponent({
   first,
   setFirst,
-  articlesPerPage,
   articles,
   articlesCount,
   loading,
@@ -28,7 +26,7 @@ function ArticlesComponent({
   const { isTimelineMode, setIsTimelineMode } = useGeneralContext();
 
   return (
-    <div className="p-pl-3 p-pr-3">
+    <div className="p-pl-1 p p-pr-1 p-mt-0">
       {
         <div className="p-formgroup-inline p-justify-center">
           <div className="p-field-checkbox">
@@ -61,7 +59,7 @@ function ArticlesComponent({
           </div>
           {articles.length > 0 && (
             <Paginator
-              rows={articlesPerPage}
+              rows={MAX_ARTICLE_PER_PAGE}
               totalRecords={articlesCount}
               first={first}
               onPageChange={(e) => setFirst(e.first)}

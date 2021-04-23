@@ -4,11 +4,11 @@ import { getArticles, getArticlesCount } from './Services/Api';
 import SearchComponent from './Components/SearchComponent/SearchComponent';
 import ArticlesComponent from './Components/ArticlesComponent/ArticlesComponent';
 import { GeneralContext } from './Context/Context';
+import { MAX_ARTICLE_PER_PAGE } from './Models/Constants';
 
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
-  const [articlesPerPage, setArticlesPerPage] = useState<number>(10)
   const [searchFilter, setSearchFilter] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('asc');
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +25,7 @@ function App() {
 
       setLoading(true);
 
-      getArticles(searchFilter, first, first + articlesPerPage, sortBy)
+      getArticles(searchFilter, first, first + MAX_ARTICLE_PER_PAGE, sortBy)
         .then((data: any) => {
           let articles = data.data as ArticleRow[];
 
@@ -38,7 +38,7 @@ function App() {
           setLoading(false);
         })
     }
-  }, [first, articlesPerPage]);
+  }, [first]);
 
   useEffect(() => {
     fetchArticles(searchFilter, sortBy);
@@ -66,16 +66,16 @@ function App() {
     <GeneralContext.Provider value={{
       articles: articles, first: first, setFirst: setFirst, isTimelineMode, setIsTimelineMode
     }}>
-      <div className="App">
+      <div className="App" style={{ overflowX: 'hidden' }}>
         <div className="p-grid">
-          <div className="p-col-12 p-pt-0">
-            <SearchComponent search={search} articlesPerPage={articlesPerPage} setArticlesPerPage={setArticlesPerPage} />
+          <div className="p-col-12 p-p-0" style={{ overflow: 'hidden' }}>
+            <SearchComponent search={search} />
           </div>
-          <div className="p-col-12 p-pt-0">
+          <div className="p-col-12">
             {
               searchFilter.length > 0 &&
               <ArticlesComponent articles={articles} articlesCount={articlesCount}
-                loading={loading} first={first} setFirst={setFirst} articlesPerPage={articlesPerPage} />
+                loading={loading} first={first} setFirst={setFirst} />
             }
           </div>
         </div>

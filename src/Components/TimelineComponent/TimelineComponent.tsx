@@ -36,10 +36,11 @@ function TimelineComponent({ loading }: TimelineComponentProps) {
 
     const newCurrentItems = newCurrentArticles.map((x, idx) => {
       return {
-        title: dayjs(x.published_date).format("D MMMM YYYY"),
+        title: dayjs(x.published_date).format("D MMM YYYY"),
         cardTitle: x.title,
         cardSubtitle: x.article_summary,
         cardDetailedText: x.body,
+        url: x.url,
       } as TimelineItemModel;
     });
 
@@ -53,8 +54,8 @@ function TimelineComponent({ loading }: TimelineComponentProps) {
 
   return (
     <div
-      className="p-pl-5 p-pr-5 p-pt-5"
-      style={{ height: `${size.height - 210}px` }}
+      className="p-p-0"
+      style={{ height: `${size.height - 140}px` }}
     >
       {currentArticles.length > 0 && (
         <Chrono
@@ -63,6 +64,7 @@ function TimelineComponent({ loading }: TimelineComponentProps) {
           scrollable={{ scrollbar: true }}
           onScrollEnd={handleLoadMore}
           allowDynamicUpdate={true}
+          cardHeight={100}
         ></Chrono>
       )}
     </div>
