@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js remove axios
+  C:\Program Files\nodejs\node.exe C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/react-dayjs
 
 PATH: 
-  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\TortoiseGit\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\dotnet\;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X64\;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X86\;C:\Program Files\nodejs\;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\dive;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\;C:\nano;C:\stripe;C:\flutter\bin;C:\Users\MEGAS\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\MEGAS\AppData\Local\Programs\Python\Python39\;C:\Users\MEGAS\AppData\Local\Microsoft\WindowsApps;C:\UnityHub\2019.3.11f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools;C:\Program Files\Bandizip\;C:\UnityHub\2019.3.11f1\Editor\Data\PlaybackEngines\AndroidPlayer\OpenJDK\bin;C:\Users\MEGAS\AppData\Local\Programs\Azure Data Studio\bin;C:\Users\MEGAS\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\MEGAS\.dotnet\tools;C:\ffmpeg\bin;C:\Users\MEGAS\AppData\Roaming\npm;C:\Users\MEGAS\AppData\Local\Markdown Monster;C:\Users\MEGAS\AppData\Local\Microsoft\WindowsApps;C:\Users\MEGAS\AppData\Local\GitHubDesktop\bin
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\dotnet\;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X64\;C:\Program Files (x86)\Pulse Secure\VC142.CRT\X86\;C:\Program Files\nodejs\;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\dive;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\;C:\nano;C:\stripe;C:\flutter\bin;C:\Program Files\TortoiseGit\bin;C:\Users\MEGAS\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\MEGAS\AppData\Local\Programs\Python\Python39\;C:\Users\MEGAS\AppData\Local\Microsoft\WindowsApps;C:\UnityHub\2019.3.11f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools;C:\Program Files\Bandizip\;C:\UnityHub\2019.3.11f1\Editor\Data\PlaybackEngines\AndroidPlayer\OpenJDK\bin;C:\Users\MEGAS\AppData\Local\Programs\Azure Data Studio\bin;C:\Users\MEGAS\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\MEGAS\.dotnet\tools;C:\ffmpeg\bin;C:\Users\MEGAS\AppData\Roaming\npm;C:\Users\MEGAS\AppData\Local\Markdown Monster;C:\Users\MEGAS\AppData\Local\Microsoft\WindowsApps;C:\Users\MEGAS\AppData\Local\GitHubDesktop\bin
 
 Yarn version: 
   1.22.10
@@ -14,7 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile 'C:\Users\MEGAS\Desktop\react-chrono\node_modules\.yarn-integrity' -> 'C:\Users\MEGAS\AppData\Local\Yarn\Cache\v6\npm-react-chrono-1.9.3-e58d446d-dd2c-4df6-aec8-55a355ea923b-1619026523362\node_modules\react-chrono\node_modules\.yarn-integrity'
+  Error: https://registry.yarnpkg.com/@types%2freact-dayjs: Not found
+      at Request.params.callback [as _callback] (C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
+      at Request.self.callback (C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (C:\Users\MEGAS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (internal/streams/readable.js:1327:12)
+      at processTicksAndRejections (internal/process/task_queues.js:80:21)
 
 npm manifest: 
   {
@@ -22,12 +32,14 @@ npm manifest:
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-      "classnames": "^2.3.1",
+      "axios": "^0.21.1",
+      "dayjs": "^1.10.4",
       "primeflex": "^2.0.0",
       "primeicons": "^4.1.0",
       "primereact": "^6.2.1",
       "react": "^17.0.2",
-      "react-chrono": "file:C:/Users/MEGAS/Desktop/react-chrono/",
+      "react-chrono": "1.9.3",
+      "react-dayjs": "^0.3.2",
       "react-device-detect": "^1.17.0",
       "react-dom": "^17.0.2",
       "react-scripts": "^4.0.3",
@@ -1368,7 +1380,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@emotion/sheet/-/sheet-1.0.1.tgz#245f54abb02dfd82326e28689f34c27aa9b2a698"
     integrity sha512-GbIvVMe4U+Zc+929N1V7nW6YYJtidj31lidSmdYcWozwoBIObXBnaJkKNDjZrLm9Nc0BR+ZyHNaRZxqNZbof5g==
   
-  "@emotion/styled@^11.3.0":
+  "@emotion/styled@^11.1.5":
     version "11.3.0"
     resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.3.0.tgz#d63ee00537dfb6ff612e31b0e915c5cf9925a207"
     integrity sha512-fUoLcN3BfMiLlRhJ8CuPUMEyKkLEoM+n+UyAbnqGEsCd5IzKQ7VQFLtzpJOaCD2/VR2+1hXQTnSZXVJeiTNltA==
@@ -3450,7 +3462,7 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
-  classnames@^2.3.1:
+  classnames@^2.3.0:
     version "2.3.1"
     resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
     integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -4197,6 +4209,11 @@ Lockfile:
       abab "^2.0.3"
       whatwg-mimetype "^2.3.0"
       whatwg-url "^8.0.0"
+  
+  dayjs@^1.10.4:
+    version "1.10.4"
+    resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
+    integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
   
   debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
     version "2.6.9"
@@ -9150,7 +9167,7 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
-  prop-types@^15.6.2, prop-types@^15.7.2:
+  prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.7.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
     integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -9326,14 +9343,23 @@ Lockfile:
       regenerator-runtime "^0.13.7"
       whatwg-fetch "^3.4.1"
   
-  "react-chrono@file:C:/Users/MEGAS/Desktop/react-chrono/":
+  react-chrono@1.9.3:
     version "1.9.3"
+    resolved "https://registry.yarnpkg.com/react-chrono/-/react-chrono-1.9.3.tgz#1fb3e9e6e8d189265d67a9d2b3c3ec2d419dda9e"
+    integrity sha512-fCfi8mZTqYq6ZpGujBIeiq11MxTzAsN1Cz9YuNTcKfY7wzeEyDzOeEgJnrwGhPKzB39mMVhQnw8OZ+lZAXpjGQ==
     dependencies:
       "@emotion/core" "^11.0.0-next.10"
       "@emotion/react" "^11.1.5"
-      "@emotion/styled" "^11.3.0"
-      classnames "^2.3.1"
+      "@emotion/styled" "^11.1.5"
+      classnames "^2.3.0"
       focus-visible "^5.2.0"
+  
+  react-dayjs@^0.3.2:
+    version "0.3.2"
+    resolved "https://registry.yarnpkg.com/react-dayjs/-/react-dayjs-0.3.2.tgz#136c0362031767a6a96d990646bc3219682e50cc"
+    integrity sha512-N9ozA6KNunzvnhwRbDi0JTa1Ine8AWQxNQ1u6sPugBenpl2mXMf0c5nOxBcs8id0z9kaKVlF2NOYzWGMoEzelg==
+    dependencies:
+      prop-types "^15.6.1"
   
   react-dev-utils@^11.0.3:
     version "11.0.4"

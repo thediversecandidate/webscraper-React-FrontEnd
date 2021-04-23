@@ -8,11 +8,12 @@ import { GeneralContext } from './Context/Context';
 function App() {
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [articlesCount, setArticlesCount] = useState<number>(0)
-  const [articlesPerPage, setArticlesPerPage] = useState<number>(6)
+  const [articlesPerPage, setArticlesPerPage] = useState<number>(10)
   const [searchFilter, setSearchFilter] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('asc');
   const [loading, setLoading] = useState<boolean>(false);
   const [first, setFirst] = useState<number>(0);
+  const [isTimelineMode, setIsTimelineMode] = useState<boolean>(false);
 
   // const searchFilterTimeout = useRef<number>();
 
@@ -44,6 +45,8 @@ function App() {
   }, [first, searchFilter, sortBy, fetchArticles]);
 
   const search = (searchFilter: string, sortBy: string) => {
+    setIsTimelineMode(false);
+    setFirst(0);
     setSearchFilter(searchFilter);
     setSortBy(sortBy);
 
@@ -61,7 +64,7 @@ function App() {
 
   return (
     <GeneralContext.Provider value={{
-      articles: articles, setFirst: setFirst,
+      articles: articles, first: first, setFirst: setFirst, isTimelineMode, setIsTimelineMode
     }}>
       <div className="App">
         <div className="p-grid">
