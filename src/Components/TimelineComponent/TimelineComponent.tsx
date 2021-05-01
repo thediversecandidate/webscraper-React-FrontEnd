@@ -38,18 +38,18 @@ function TimelineComponent({ loading }: TimelineComponentProps) {
       return {
         title: dayjs(x.published_date).format("D MMM YYYY"),
         cardTitle: x.title,
-        cardSubtitle: x.article_summary,
-        cardDetailedText: x.body,
+        // cardSubtitle: x.article_summary,
+        cardDetailedText: x.article_summary,
         url: x.url,
       } as TimelineItemModel;
     });
 
     setCurrentItems(newCurrentItems);
 
-    // console.log("useEffect => next", {
-    //   newCurrentArticles,
-    //   newCurrentItems,
-    // });
+    console.log("useEffect => next", {
+      newCurrentArticles,
+      newCurrentItems,
+    });
   }, [articles]);
 
   return (
