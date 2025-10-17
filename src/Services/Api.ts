@@ -14,7 +14,7 @@ export const getArticles = async (search: string, first: number, last: number, o
             });
         return results;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error instanceof Error ? error.message : String(error))
     }
 }
 
@@ -30,6 +30,6 @@ export const getArticlesCount = async (search: string): Promise<AxiosResponse<Ge
             });
         return results;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error instanceof Error ? error.message : String(error))
     }
 }
