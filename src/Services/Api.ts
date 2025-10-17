@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios"
 
-// const baseUrl: string = process.env.NODE_ENV !== 'production' ? 'http://localhost:80' : 'https://api.thediversecandidate.com'
-const baseUrl: string = 'https://api.thediversecandidate.com'
+// Enable local development - change this to true for local backend
+const useLocalBackend = true;
+const baseUrl: string = useLocalBackend ? 'http://localhost:8000' : 'https://api.thediversecandidate.com'
 
 export const getArticles = async (search: string, first: number, last: number, orderBy: string): Promise<AxiosResponse<GetArticlesResponse>> => {
     try {

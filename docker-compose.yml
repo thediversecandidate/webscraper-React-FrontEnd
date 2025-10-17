@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: webscraper_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - webscraper_network
+
+  # Redis for Celery
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - webscraper_network
+
+  # Elasticsearch
+  elasticsearch:
+    image: elasticsearch:7.7.1
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - webscraper_network
+
+  # Django Backend
+  django-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "80:80"
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/webscraper_db
+      - REDIS_URL=redis://redis:6379/0
+      - ELASTICSEARCH_DSL_HOST=elasticsearch:9200
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    volumes:
+      - ../Webscraping/django/derrick:/app
+    networks:
+      - webscraper_network
+    command: python manage.py runserver 0.0.0.0:80
+
+  # React Frontend
+  react-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:80
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - webscraper_network
+    command: npm start
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+
+networks:
+  webscraper_network:
+    driver: bridge

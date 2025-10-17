@@ -1,0 +1,21 @@
+# Frontend Dockerfile
+FROM node:17-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Install dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy source code
+COPY . .
+
+# Set environment variables for Node.js compatibility
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
