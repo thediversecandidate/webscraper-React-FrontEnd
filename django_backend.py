@@ -221,9 +221,18 @@ def run_server():
     print("🎯 Frontend should be configured to use: http://localhost:8000")
     print("Press Ctrl+C to stop the server")
     
-    # Run Django development server
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', __name__)
-    execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
+    # Start Django development server
+    from django.core.management.commands.runserver import Command as RunServerCommand
+    from django.core.management.base import CommandParser
+    
+    # Simple HTTP server alternative if Django fails
+    try:
+        from django.core.management import execute_from_command_line
+        execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
+    except Exception as e:
+        print(f"⚠️  Django server failed: {e}")
+        print("🔄 Starting simple HTTP server instead...")
+        start_simple_server()
 
 if __name__ == '__main__':
     run_server()
