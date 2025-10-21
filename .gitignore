@@ -1,2 +1,5 @@
 node_modules
 build
+
+# Trust Protocol tamper detection
+.protocol_hash.json

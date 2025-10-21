@@ -14,16 +14,16 @@ function Test-Port($port) {
 }
 
 # Check if backend is already running
-if (Test-Port 8000) {
-    Write-Host "⚠️  Backend already running on port 8000" -ForegroundColor Yellow
+if (Test-Port 8080) {
+    Write-Host "⚠️  Backend already running on port 8080" -ForegroundColor Yellow
 } else {
-    Write-Host "🔧 Starting Django Backend Server..." -ForegroundColor Cyan
+    Write-Host "🔧 Starting Python Backend Server..." -ForegroundColor Cyan
     
-    # Activate virtual environment and start backend
+    # Start standalone backend
     $backendProcess = Start-Process powershell -ArgumentList @(
         "-NoExit",
         "-Command", 
-        "cd '$PWD'; & '.\backend_venv\Scripts\Activate.ps1'; python django_backend.py"
+        "cd '$PWD'; python standalone_backend.py"
     ) -PassThru
     
     Write-Host "⏳ Waiting for backend to start..." -ForegroundColor Yellow
@@ -31,16 +31,16 @@ if (Test-Port 8000) {
     
     # Verify backend is running
     $attempts = 0
-    while (-not (Test-Port 8000) -and $attempts -lt 10) {
+    while (-not (Test-Port 8080) -and $attempts -lt 10) {
         Start-Sleep -Seconds 2
         $attempts++
         Write-Host "⏳ Still waiting for backend... ($attempts/10)" -ForegroundColor Yellow
     }
     
-    if (Test-Port 8000) {
+    if (Test-Port 8080) {
         Write-Host "✅ Backend server started successfully!" -ForegroundColor Green
     } else {
-        Write-Host "❌ Backend failed to start on port 8000" -ForegroundColor Red
+        Write-Host "❌ Backend failed to start on port 8080" -ForegroundColor Red
         exit 1
     }
 }
@@ -79,12 +79,12 @@ if (Test-Port 3001) {
 }
 
 Write-Host "`n🎉 Full Stack Application Status:" -ForegroundColor Green
-Write-Host "   🔧 Backend API: http://localhost:8000" -ForegroundColor Cyan
+Write-Host "   🔧 Backend API: http://localhost:8080" -ForegroundColor Cyan
 Write-Host "   🎨 Frontend App: http://localhost:3001" -ForegroundColor Cyan
 Write-Host "`n🌐 Open http://localhost:3001 in your browser to use the app!" -ForegroundColor Yellow
 Write-Host "📋 Available API endpoints:" -ForegroundColor White
-Write-Host "   - Health Check: http://localhost:8000/health/" -ForegroundColor Gray
-Write-Host "   - Search Articles: http://localhost:8000/articles/search/{term}/{first}/{last}/{order}" -ForegroundColor Gray
-Write-Host "   - Article Count: http://localhost:8000/articles/results/{term}" -ForegroundColor Gray
+Write-Host "   - Health Check: http://localhost:8080/health/" -ForegroundColor Gray
+Write-Host "   - Search Articles: http://localhost:8080/articles/search/{term}/{first}/{last}/{order}" -ForegroundColor Gray
+Write-Host "   - Article Count: http://localhost:8080/articles/results/{term}" -ForegroundColor Gray
 
 Write-Host "`n⏹️  To stop both servers, close their respective terminal windows" -ForegroundColor Yellow

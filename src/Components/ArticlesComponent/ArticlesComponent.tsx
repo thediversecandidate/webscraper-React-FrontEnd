@@ -42,7 +42,7 @@ function ArticlesComponent({
           </div>
           {articles.length > 0 && (
             <div>
-              <b>Found {articlesCount.toString()} articles</b>
+              <b>Found {(articlesCount || articles.length || 0).toString()} articles</b>
             </div>
           )}
         </div>
@@ -54,14 +54,14 @@ function ArticlesComponent({
       ) : (
         <div>
           <div className="p-d-flex p-flex-wrap p-justify-center">
-            {articles.map((article: ArticleRow, index: number) => (
+            {Array.isArray(articles) && articles.map((article: ArticleRow, index: number) => (
               <WordCloudComponent key={index.toString()} article={article} />
             ))}
           </div>
-          {articles.length > 0 && (
+          {Array.isArray(articles) && articles.length > 0 && (
             <Paginator
               rows={(isMobile ? MAX_ARTICLE_PER_PAGE_MOBILE : MAX_ARTICLE_PER_PAGE_DESKTOP)}
-              totalRecords={articlesCount}
+              totalRecords={articlesCount || articles.length || 0}
               first={first}
               onPageChange={(e) => setFirst(e.first)}
               template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"

@@ -3,24 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.21.1",
-    "dayjs": "^1.10.4",
-    "primeflex": "^2.0.0",
-    "primeicons": "^4.1.0",
-    "primereact": "^6.2.1",
-    "react": "^17.0.2",
-    "react-chrono": "1.9.3",
-    "react-device-detect": "^1.17.0",
-    "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
-    "react-transition-group": "^4.4.1",
-    "react-wordcloud": "^1.2.7",
-    "typescript": "^4.2.4"
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
+    "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.3",
+    "react": "^18.3.1",
+    "react-chrono": "^1.20.2",
+    "react-device-detect": "^2.2.3",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
+    "react-wordcloud": "^1.2.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "node start-smart.js",
+    "start-manual": "react-app-rewired start",
+    "start-smart": "node start-smart.js",
+    "backend": "set PYTHONIOENCODING=utf-8 && python semantic_web_mining_engine.py",
+    "dev": "set PYTHONIOENCODING=utf-8 && node dev-start.js",
+    "dev-concurrent": "concurrently \"npm run backend\" \"npm run start-smart\"",
+    "dev-simple": "concurrently \"python semantic_web_mining_engine.py\" \"PORT=3001 npm start\"",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,10 +46,29 @@
     ]
   },
   "devDependencies": {
-    "@types/classnames": "^2.2.11",
-    "@types/node": "^14.14.41",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
-    "yarn-upgrade-all": "^0.5.4"
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/classnames": "^2.3.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.8.6",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "babel-jest": "^30.2.0",
+    "concurrently": "^9.2.1",
+    "identity-obj-proxy": "^3.0.0",
+    "react-app-rewired": "^2.2.1",
+    "ts-jest": "^29.4.5",
+    "typescript": "^4.9.5"
+  },
+  "overrides": {
+    "d3-color": "^3.1.0",
+    "nth-check": "^2.1.1",
+    "postcss": "^8.4.31",
+    "webpack-dev-server": "^5.2.1"
   }
 }

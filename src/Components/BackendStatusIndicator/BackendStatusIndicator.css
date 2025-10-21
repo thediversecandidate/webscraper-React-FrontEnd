@@ -1,0 +1,88 @@
+.backend-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.status-light {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: black;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.status-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-message {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1;
+}
+
+.status-time {
+  font-size: 10px;
+  color: #666;
+  line-height: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .backend-status-indicator {
+    padding: 6px 8px;
+    gap: 6px;
+  }
+  
+  .status-light {
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+  }
+  
+  .status-message {
+    font-size: 11px;
+  }
+  
+  .status-time {
+    font-size: 9px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .backend-status-indicator {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .status-message {
+    color: #fff;
+  }
+  
+  .status-time {
+    color: #ccc;
+  }
+}

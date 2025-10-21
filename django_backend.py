@@ -234,5 +234,108 @@ def run_server():
         print("🔄 Starting simple HTTP server instead...")
         start_simple_server()
 
+def start_simple_server():
+    """Start a simple HTTP server as fallback"""
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    import urllib.parse
+    
+    class WebscraperHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            # Parse the URL
+            parsed_path = urllib.parse.urlparse(self.path)
+            path_parts = parsed_path.path.strip('/').split('/')
+            
+            # Enable CORS
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', '*')
+            
+            # Route handling
+            if len(path_parts) >= 5 and path_parts[0] == 'articles' and path_parts[1] == 'search':
+                # /articles/search/{search}/{first}/{last}/{order}
+                search = path_parts[2]
+                first = int(path_parts[3])
+                last = int(path_parts[4])
+                order_by = path_parts[5] if len(path_parts) > 5 else 'asc'
+                
+                # Get articles
+                all_articles = get_articles_for_search(search)
+                if order_by.lower() == 'desc':
+                    all_articles.sort(key=lambda x: x['published_date'], reverse=True)
+                else:
+                    all_articles.sort(key=lambda x: x['published_date'])
+                
+                articles_slice = all_articles[first:last]
+                response = {
+                    "message": "Articles retrieved successfully",
+                    "status": "success", 
+                    "data": articles_slice
+                }
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(response).encode())
+                
+            elif len(path_parts) >= 3 and path_parts[0] == 'articles' and path_parts[1] == 'results':
+                # /articles/results/{search}
+                search = path_parts[2]
+                articles = get_articles_for_search(search)
+                response = {
+                    "message": "Count retrieved successfully",
+                    "status": "success",
+                    "data": {"count": len(articles)}
+                }
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(response).encode())
+                
+            elif path_parts[0] == 'health' or self.path == '/':
+                # Health check
+                response = {
+                    "message": "Webscraper API is running",
+                    "status": "healthy", 
+                    "timestamp": datetime.now().isoformat()
+                }
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(response).encode())
+            else:
+                self.send_response(404)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Not found"}).encode())
+        
+        def do_OPTIONS(self):
+            # Handle CORS preflight
+            self.send_response(200)
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', '*')
+            self.end_headers()
+    
+    # Start simple HTTP server
+    server = HTTPServer(('0.0.0.0', 8000), WebscraperHandler)
+    print("🌐 Simple HTTP server running on http://localhost:8000")
+    server.serve_forever()
+
 if __name__ == '__main__':
-    run_server()
+    # Try Django first, fall back to simple server
+    try:
+        django.setup()
+        run_server()
+    except Exception as e:
+        print(f"⚠️  Django setup failed: {e}")
+        print("🔄 Starting with simple HTTP server...")
+        
+        # Pre-populate some sample data
+        common_terms = ['technology', 'ai', 'python', 'react', 'django', 'javascript']
+        for term in common_terms:
+            get_articles_for_search(term)
+        print("✅ Sample data ready!")
+        
+        start_simple_server()
