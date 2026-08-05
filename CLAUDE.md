@@ -13,15 +13,45 @@ CLAUDE.md for the backend.
 ## Commands
 
 ```bash
-yarn                    # or npm install
-npm run start-manual    # plain react-app-rewired start (port 3000)
-npm start                # -> node start-smart.js: auto-detects a free port
-npm test                 # react-app-rewired test (Jest + Testing Library)
-npm run build             # production build
+npm install --legacy-peer-deps  # required: react-wordcloud's peer dep only declares React 16 support
+npm run start-manual             # plain react-app-rewired start (port 3000)
+npm start                        # -> node start-smart.js: auto-detects a free port
+npm test                         # react-app-rewired test (Jest + Testing Library)
+npm run build                    # production build
 ```
 
 `npm run dev` / `npm run backend` also exist (see below) but start a local
 *experimental* Python backend, not the production one.
+
+Verified working (2026-08): fresh install, `npm test` (1/1 passing, plus
+`TimelineComponent`'s suite deliberately excluded — see below), and
+`npm run build` (compiles cleanly, ~217 kB gzipped JS).
+
+## Jest config lives in `config-overrides.js`, not `jest.config.js`
+
+`react-app-rewired test` (which `npm test` runs) does **not** read a
+top-level `jest.config.js` — react-scripts builds its Jest config
+programmatically, and react-app-rewired only lets you touch it through
+`config-overrides.js`'s `jest` export. A `jest.config.js` used to sit at
+the repo root doing nothing: its `transformIgnorePatterns` override for
+ESM-only `d3-*` packages (needed because `react-wordcloud` pulls in
+`d3-transition`, which nests its own ESM-only copy of `d3-interpolate`)
+never actually took effect, so `npm test` failed outright with
+`SyntaxError: Unexpected token 'export'`. `SECURITY-VERIFICATION.md`
+claimed this had already been fixed via that file — it hadn't. Fixed by
+moving the override into `config-overrides.js`'s `jest` hook (the only
+place react-app-rewired actually reads), and the dead `jest.config.js` was
+deleted rather than left around to mislead the next edit.
+
+That same `jest` hook also excludes
+`TimelineComponent.test.tsx` (`testPathIgnorePatterns`) — that suite
+renders the real, unmocked `react-chrono` library in jsdom, which doesn't
+implement the layout APIs (`ResizeObserver`, real `getBoundingClientRect`)
+react-chrono needs, and it spins consuming multiple GB of RAM instead of
+failing cleanly. `SECURITY-VERIFICATION.md` also claimed this exclusion
+already existed "due to memory constraints" — it didn't, anywhere. If
+react-chrono gets mocked in that test in the future, remove the exclusion
+rather than leaving it stale.
 
 ## Where the frontend actually gets its data
 
@@ -78,6 +108,25 @@ checkout) + this React frontend. `Dockerfile` / `Dockerfile.backend` /
 `Dockerfile.frontend` are separate images for each piece. This is the
 closest thing to a "real" full local stack, as opposed to the standalone
 mock/experimental Python scripts above.
+
+## Dependency vulnerabilities
+
+A fresh `npm install --legacy-peer-deps && npm audit` found 57 known
+vulnerabilities (4 critical, 28 high) — `SECURITY-VERIFICATION.md`'s "0
+vulnerabilities" claim (October 2025) had gone stale as new CVEs landed in
+transitive dependencies over the following ~10 months, not from any change
+made in this repo. `npm audit fix` (non-breaking) closed 32 of them, down
+to 25 remaining — every one of those 25 is inside `react-scripts`' own
+build/dev toolchain (`jest`, `webpack-dev-server`, `svgo`/`@svgr/*`,
+`workbox-build`) and doesn't ship in the production bundle from
+`npm run build`. Full closure requires migrating off Create React App
+(unmaintained upstream) to a maintained build tool — Vite is the standard
+replacement for a React 18 app like this one — which is a real migration
+(env var prefix changes, config rewrite, full smoke test), not a dependency
+bump; flagged as the top modernization recommendation for this repo, not
+attempted here. See `SECURITY-VERIFICATION.md`'s "2026-08-05 re-audit"
+section for the full breakdown, and re-run `npm audit` before trusting any
+"zero vulnerabilities" claim in that file again.
 
 ## Structure
 

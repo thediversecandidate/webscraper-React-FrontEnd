@@ -15,7 +15,34 @@ module.exports = {
   webpack: function(config, env) {
     return config;
   },
-  
+
+  // react-app-rewired's `test` script does NOT read a standalone
+  // jest.config.js at the project root -- react-scripts' own test runner
+  // builds its Jest config programmatically and react-app-rewired only
+  // lets you touch it through this `jest` hook. (A jest.config.js file
+  // used to sit here uselessly: its transformIgnorePatterns override for
+  // ESM-only d3 packages never took effect, which is why `npm test` broke
+  // with "Unexpected token 'export'" on d3-transition's nested
+  // d3-interpolate copy.)
+  jest: function(config) {
+    config.transformIgnorePatterns = [
+      'node_modules/(?!(react-chrono|react-wordcloud|d3-.*)/)'
+    ];
+    // TimelineComponent's tests render the real (unmocked) react-chrono
+    // library in jsdom, which doesn't implement layout APIs (e.g.
+    // ResizeObserver, real getBoundingClientRect) react-chrono relies on --
+    // it spins, consuming multiple GB of RAM, instead of failing cleanly.
+    // SECURITY-VERIFICATION.md previously *claimed* this was already
+    // excluded "due to memory constraints," but no exclusion actually
+    // existed anywhere in the config. If react-chrono is mocked in this
+    // test in the future, remove this line rather than leaving it stale.
+    config.testPathIgnorePatterns = [
+      ...(config.testPathIgnorePatterns || []),
+      '/src/Components/TimelineComponent/TimelineComponent.test.tsx$'
+    ];
+    return config;
+  },
+
   devServer: function(configFunction) {
     return function(proxy, allowedHost) {
       const config = configFunction(proxy, allowedHost);
