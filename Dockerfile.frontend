@@ -1,21 +1,27 @@
-# Frontend Dockerfile
-FROM node:17-alpine
+# Frontend Dockerfile (Vite)
+# node:17 was EOL long ago; 22 is the current active LTS line.
+FROM node:22-alpine
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY yarn.lock ./
 
 # Install dependencies
+# --legacy-peer-deps is required: react-wordcloud@1.2.7 declares a React 16
+# peer dependency while this app runs React 18.
 RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
 
-# Set environment variables for Node.js compatibility
-ENV NODE_OPTIONS=--openssl-legacy-provider
+# NOTE: NODE_OPTIONS=--openssl-legacy-provider used to be set here. That was
+# a workaround for webpack 4's use of an MD4 hash that OpenSSL 3 removed --
+# a Create React App problem. Vite doesn't need it, and keeping it would
+# re-enable a deprecated OpenSSL provider for no reason.
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# --host binds 0.0.0.0 so the dev server is reachable from outside the
+# container; Vite binds localhost only by default.
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "3000"]

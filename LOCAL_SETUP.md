@@ -10,7 +10,7 @@
 
 1. **Navigate to backend directory:**
    ```powershell
-   cd "C:\Users\DerrickAlford\OneDrive - thediversecandidate Limited Liability Co\Documents\GitHub\Webscraping\django\derrick"
+   cd <your-checkout>/Webscraping/django/derrick
    ```
 
 2. **Create and activate virtual environment:**
@@ -43,7 +43,8 @@
    ```
 
 ### Frontend Configuration
-The frontend is already configured to use `http://localhost:8000` when `useLocalBackend = true` in `Api.ts`.
+Point the frontend at this backend by setting `VITE_API_BASEURL=http://localhost:8000` in a `.env.local` file at the repo root.
+(There is no `useLocalBackend` flag in `Api.ts` — this doc used to describe one; URL selection is env-var driven.)
 
 ### Testing
 1. Backend API: http://localhost:8000/admin
@@ -75,5 +76,5 @@ This will start:
 
 ### Frontend Issues:
 - **CORS errors**: Backend includes django-cors-headers
-- **API connection**: Check `useLocalBackend` flag in Api.ts
-- **Node issues**: Use `NODE_OPTIONS=--openssl-legacy-provider`
+- **API connection**: check `VITE_API_BASEURL` in your `.env.local`, and `src/Services/Api.ts` for the resolution order
+- **Node issues**: do NOT set `NODE_OPTIONS=--openssl-legacy-provider`. That was a webpack-4/CRA workaround; this project builds with Vite and re-enabling a deprecated OpenSSL provider has no upside. Use Node 20+.

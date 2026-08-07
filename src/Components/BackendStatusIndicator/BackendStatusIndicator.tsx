@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiBaseUrl } from '../../Services/Api';
 import './BackendStatusIndicator.css';
 
 export interface BackendStatus {
@@ -21,7 +22,14 @@ const BackendStatusIndicator: React.FC = () => {
     
     try {
       console.log('[HEALTH CHECK] Starting backend health check...');
-      const response = await axios.get('http://localhost:8080/health', {
+      // Probes the SAME backend Api.ts talks to. This used to hardcode
+      // http://localhost:8080/health -- the experimental semantic engine's
+      // port -- so the status light reported on a service the app never
+      // called, and read "offline" whenever that local script wasn't
+      // running even though the real API was fine. The Django API's `/`
+      // index route is unauthenticated and returns 200, which is what
+      // makes it usable as a health probe without a token.
+      const response = await axios.get(`${apiBaseUrl}/`, {
         timeout: 3000, // 3 second timeout
         headers: {
           'Accept': 'application/json'
@@ -82,6 +90,17 @@ const BackendStatusIndicator: React.FC = () => {
   };
 
   useEffect(() => {
+    // Don't poll a real backend from unit tests -- rendering <App /> would
+    // otherwise fire outbound HTTP from jsdom on every test run.
+    if (import.meta.env.MODE === 'test') {
+      setBackendStatus({
+        status: 'offline',
+        lastCheck: new Date(),
+        message: 'Health check disabled in tests',
+      });
+      return;
+    }
+
     // Initial check
     checkBackendHealth().then(setBackendStatus);
 

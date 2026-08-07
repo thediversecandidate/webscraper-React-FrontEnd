@@ -1,98 +1,65 @@
-# 🚀 Webscraper React Frontend - Development Guide
+# Webscraper React Frontend — Development Guide
 
-## Revolutionary Semantic Web Mining System
-This project features a cutting-edge semantic web mining engine that uses **set theory** and **mathematical optimization** to dynamically discover content sources rather than relying on hard-coded APIs.
+Build tooling is **Vite** (migrated off Create React App in 2026-08 — CRA is
+unmaintained upstream and its toolchain was the source of every remaining
+npm CVE). Tests run on **Vitest**.
 
-## 🔥 Quick Start (Gold Standard)
+## Quick start
 
-### One-Command Development
 ```bash
-npm run dev
-```
-This automatically:
-- ✅ Starts the semantic web mining engine (port 8080)
-- ✅ Finds an available port for React (auto-detection)
-- ✅ Handles graceful shutdown with Ctrl+C
-- ✅ Provides real-time logs from both services
-
-## 🛠️ Development Options
-
-### 1. **Smart Development** (Recommended)
-```bash
-npm run dev                 # Full-stack with smart port detection
+npm install --legacy-peer-deps   # see note below on why the flag is needed
+npm start                         # Vite dev server, http://localhost:3000
 ```
 
-### 2. **Concurrent Simple**
-```bash
-npm run dev-concurrent      # Uses concurrently package
+Vite picks the next free port automatically if 3000 is taken, so there's no
+port-hunting wrapper script any more (`start-smart.js` / `dev-start.js` /
+`task-runner.js` were CRA-era helpers and have been removed).
+
+## Commands
+
+| Command | What it does |
+|---------|--------------|
+| `npm start` / `npm run dev` | Vite dev server with HMR |
+| `npm run build` | Type-check (`tsc --noEmit`) then production build into `build/` |
+| `npm run preview` | Serve the built output locally, to sanity-check a production build |
+| `npm test` | Vitest, single run |
+| `npm run test:watch` | Vitest in watch mode |
+| `npm run backend` | Starts `semantic_web_mining_engine.py` — an *experimental* local backend, not the production API |
+
+### Why `--legacy-peer-deps`
+
+`react-wordcloud@1.2.7` declares a peer dependency on React 16 while this app
+runs React 18. `npm install` fails without the flag. This is a stale
+declaration in that package, not a real incompatibility — but it means you
+cannot drop the flag until `react-wordcloud` is replaced or updated.
+
+## Environment variables
+
+Vite only exposes env vars prefixed `VITE_` to client code, and reads them
+via `import.meta.env`, not `process.env`. The variables changed names in the
+migration:
+
+| Old (CRA) | New (Vite) |
+|-----------|------------|
+| `REACT_APP_API_BASEURL` | `VITE_API_BASEURL` |
+| `REACT_APP_API_TOKEN` | `VITE_API_TOKEN` |
+
+Put them in a `.env.local` (gitignored) for local development:
+
+```
+VITE_API_BASEURL=http://localhost:8000
+VITE_API_TOKEN=your-token-here
 ```
 
-### 3. **Manual Control**
-```bash
-# Terminal 1: Start backend
-npm run backend             # or: python semantic_web_mining_engine.py
+With neither set, `src/Services/Api.ts` falls back to the remote API at
+`https://api.thediversecandidate.com` — see that file, which is the single
+source of truth for backend URL resolution.
 
-# Terminal 2: Start frontend (smart port)
-npm run start-smart
+## Which backend am I talking to?
 
-# Terminal 2: Start frontend (manual port)
-PORT=3001 npm start
-```
-
-### 4. **Port-Specific**
-```bash
-PORT=3002 npm start         # Force specific port
-```
-
-## 🎯 Available Ports & Services
-
-- **Backend API**: http://localhost:8080
-- **Frontend**: Auto-detected (usually 3001, 3002, etc.)
-- **Health Check**: http://localhost:8080/health
-
-## 🧠 Testing the Semantic Algorithm
-
-Once both servers are running, test these queries:
-- "machine learning tutorial"
-- "react best practices" 
-- "python data science"
-- "web development 2024"
-
-Watch the **set theory optimization** in action!
-
-## 🏆 Best Practices Implemented
-
-✅ **Single Command Start**: `npm run dev`  
-✅ **Smart Port Detection**: Automatically avoids conflicts  
-✅ **Graceful Shutdown**: Ctrl+C stops all services cleanly  
-✅ **Environment Detection**: Auto-detects Python virtual env  
-✅ **Real-time Logging**: Separate logs for frontend/backend  
-✅ **Error Handling**: Clear error messages and fallbacks  
-
-## 🔧 Scripts Explained
-
-| Script | Purpose | When to Use |
-|--------|---------|-------------|
-| `npm run dev` | **Gold Standard** - Full automation | Daily development |
-| `npm run dev-concurrent` | Alternative using concurrently | If dev-start.js fails |
-| `npm run start-smart` | Frontend only with port detection | Backend already running |
-| `npm start` | Standard React start | Manual port control |
-| `npm run backend` | Backend only | Frontend already running |
-
-## 🚨 Troubleshooting
-
-**Port Conflicts?**
-- The system auto-detects available ports (3001, 3002, 3003...)
-- Use `PORT=XXXX npm start` to force a specific port
-
-**Python Environment?**
-- Auto-detects `backend_venv/Scripts/python.exe`
-- Falls back to system `python` command
-
-**Backend Not Starting?**
-- Ensure `semantic_web_mining_engine.py` exists
-- Check Python dependencies are installed
-
-## 🎉 You're Ready!
-
-Run `npm run dev` and watch your revolutionary semantic web mining system come to life! 🧠⚡
+This repo accumulated many standalone Python backend scripts at the root
+(mock, real-scraping, and "semantic engine" variants). They are alternatives,
+not layers. `src/Services/Api.ts` decides what the app actually calls —
+check there and your `VITE_API_BASEURL` before assuming. See `CLAUDE.md` for
+the breakdown of which script is which, and note that some return
+**fabricated** data.

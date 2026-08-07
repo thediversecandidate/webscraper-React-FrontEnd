@@ -1,46 +1,52 @@
 # Security Vulnerability Verification Report
 
-**Date:** October 17, 2025 (original report below) — **re-audited 2026-08-05, see update**
+**Date:** October 17, 2025 (original report below) — **superseded; see the 2026-08-07 audit immediately below**
 **Project:** Webscraper React Frontend  
-**Status (2026-08-05):** ⚠️ **25 known vulnerabilities remain, all in the CRA/react-scripts build toolchain — see "2026-08-05 re-audit" below before trusting the "Zero Vulnerabilities" claims further down this document.**
+**Status (2026-08-07):** ✅ **0 vulnerabilities, after migrating off Create React App to Vite.** Everything from "Executive Summary (original, October 2025)" downward describes the old CRA toolchain and is retained only as history — it does not describe the current build.
 
 ---
 
-## 2026-08-05 re-audit — read this first
+## 2026-08-05 / 2026-08-07 audit — read this first
 
-A fresh `npm install --legacy-peer-deps && npm audit` found **57 vulnerabilities
-(4 critical, 28 high, 14 moderate, 11 low)** — the "0 vulnerabilities" claim
-below had gone stale as transitive dependencies picked up new CVEs since
-October 2025; this is not a regression from any change made here, just time
-passing on an unmaintained toolchain.
+**Current status: `npm audit` reports 0 vulnerabilities.**
 
-`npm audit fix` (no `--force`, so no breaking changes) closed 32 of them,
-down to **25 remaining (0 critical, 11 high, 5 moderate, 9 low)**. Every one
-of the 25 is in `react-scripts`' own build/dev toolchain — `jest`,
-`webpack-dev-server`, `svgo`/`@svgr/*` (SVG-to-component transform),
-`workbox-build` (service worker generation), `jsonpath`/`underscore`/`bfj`
-(used by `react-dev-utils` error overlays). None of these ship in the
-`npm run build` production bundle; they only run on a developer's machine
-during `npm start`/`npm test`/`npm run build` itself. That materially lowers
-the real-world risk (not exposed to end users of the deployed app) but it
-does not make the claim below accurate — do not repeat "0 vulnerabilities"
-without re-running `npm audit` first.
+Timeline of how that was reached, because the "Zero Vulnerabilities" claims
+further down this document are from October 2025 and had gone stale:
 
-**The actual fix for full closure**, not attempted here: `react-scripts` /
-Create React App is unmaintained upstream, so these CVEs will keep
-reappearing regardless of `npm audit fix` cadence. Migrating off CRA to a
-maintained build tool (Vite is the standard replacement for a CRA + React 18
-app) removes this entire class of vulnerable-toolchain findings, but is a
-real migration — env var prefix changes (`REACT_APP_` → `VITE_`), config
-rewrite, and a full manual smoke test — not a dependency bump. Flagged as
-the top modernization recommendation for this repo; not executed in this
-pass.
+1. **2026-08-05.** A fresh `npm install --legacy-peer-deps && npm audit`
+   found **57 vulnerabilities (4 critical, 28 high, 14 moderate, 11 low)** —
+   not a regression from any change, just ~10 months of new CVEs landing in
+   an unmaintained toolchain. `npm audit fix` (non-breaking) closed 32,
+   leaving **25**, every one of them inside `react-scripts`' own build/dev
+   toolchain (`jest`, `webpack-dev-server`, `svgo`/`@svgr/*`,
+   `workbox-build`, `jsonpath`/`underscore`/`bfj`).
+2. **2026-08-07.** Those 25 were structural: Create React App is
+   unmaintained upstream, so they would keep reappearing regardless of
+   `npm audit fix` cadence. **The project was migrated off CRA to Vite +
+   Vitest**, which removes that entire dependency tree. Result:
 
-Also unrelated to the CVE count but worth knowing before running
-`npm install`: `react-wordcloud@1.2.7`'s peer dependency only declares
-support for React 16, while this project runs React 18 — `npm install`
-fails without `--legacy-peer-deps` for this reason, not because of a
-version typo.
+   | | Before (CRA) | After (Vite) |
+   |---|---|---|
+   | npm packages installed | 1494 | 258 |
+   | `npm audit` vulnerabilities | 57 | **0** |
+   | Production build time | ~30s+ | ~2.7s |
+
+   Verified with a clean `rm -rf node_modules package-lock.json &&
+   npm install`, then `tsc --noEmit`, `vitest run`, `vite build`, and a live
+   dev-server check — all passing.
+
+**Keep this honest going forward:** re-run `npm audit` before repeating a
+"zero vulnerabilities" claim. The number above is accurate as of
+2026-08-07 and will drift.
+
+### Not a CVE, but don't be surprised by it
+
+`npm install` still requires `--legacy-peer-deps`. `react-wordcloud@1.2.7`
+declares a React 16 peer dependency while this app runs React 18. That's a
+stale declaration in an unmaintained package, not a real incompatibility —
+but it's the one remaining dependency that would be worth replacing, both
+to drop the flag and because it pulls in the `d3-*` tree this project has
+had to pin overrides for repeatedly.
 
 ---
 

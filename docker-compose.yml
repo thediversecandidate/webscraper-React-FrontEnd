@@ -67,7 +67,11 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - REACT_APP_API_URL=http://localhost:80
+      # Api.ts reads VITE_API_BASEURL (it was REACT_APP_API_BASEURL before
+      # the Vite migration). This line previously set REACT_APP_API_URL --
+      # a name the code never read -- so the compose-configured backend URL
+      # was silently ignored and the app fell back to the remote default.
+      - VITE_API_BASEURL=http://localhost:80
     volumes:
       - .:/app
       - /app/node_modules
